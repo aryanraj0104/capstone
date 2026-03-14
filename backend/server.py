@@ -135,13 +135,23 @@ def faculty_dashboard():
     .qr-wrap {{ text-align: center; padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }}
     .qr-wrap img {{ width: 220px; height: 220px; display: block; margin: 0 auto 12px; }}
     .qr-wrap p {{ margin: 0; color: #666; font-size: 0.9rem; }}
-    .table-wrap {{ background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }}
-    table {{ width: 100%; border-collapse: collapse; }}
-    th {{ background: #006747; color: #fff; padding: 12px 16px; text-align: left; font-weight: 600; }}
-    td {{ padding: 12px 16px; border-bottom: 1px solid #eee; }}
-    tr:last-child td {{ border-bottom: none; }}
-    tr:nth-child(even) {{ background: #fafafa; }}
-    .count {{ color: #006747; font-weight: 600; margin-bottom: 12px; }}
+    .table-wrap {{ background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; padding: 20px; }}
+    .count {{ color: #006747; font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; letter-spacing: 0.02em; }}
+    table {{ width: 100%; border-collapse: collapse; font-size: 0.95rem; }}
+    thead {{ background: #006747; color: #fff; }}
+    th {{ padding: 14px 20px; text-align: left; font-weight: 600; letter-spacing: 0.03em; }}
+    th:first-child {{ width: 56px; text-align: center; border-radius: 12px 0 0 0; }}
+    th:last-child {{ border-radius: 0 12px 0 0; }}
+    tbody tr {{ border-bottom: 1px solid #eee; transition: background 0.15s ease; }}
+    tbody tr:hover {{ background: #f0f7f4; }}
+    tbody tr:last-child {{ border-bottom: none; }}
+    tbody tr:nth-child(even) {{ background: #fafafa; }}
+    tbody tr:nth-child(even):hover {{ background: #f0f7f4; }}
+    td {{ padding: 14px 20px; }}
+    td:first-child {{ font-weight: 600; color: #666; text-align: center; }}
+    td:nth-child(2) {{ font-weight: 600; color: #111; font-family: ui-monospace, monospace; }}
+    .status-badge {{ display: inline-block; background: #006747; color: #fff; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }}
+    .empty-row td {{ padding: 28px; text-align: center; color: #888; font-style: italic; }}
   </style>
 </head>
 <body>
@@ -154,7 +164,7 @@ def faculty_dashboard():
     <div class="table-wrap">
       <p class="count" id="count">Present: 0</p>
       <table>
-        <thead><tr><th>#</th><th>Roll Number</th><th>Name</th><th>Status</th></tr></thead>
+        <thead><tr><th>#</th><th>Roll Number</th><th>Status</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
@@ -168,7 +178,7 @@ def faculty_dashboard():
           const students = d.students || [];
           document.getElementById('count').textContent = 'Present: ' + students.length;
           const tbody = document.getElementById('tbody');
-          tbody.innerHTML = students.map((r, i) => '<tr><td>' + (i+1) + '</td><td>' + r + '</td><td>—</td><td>Present</td></tr>').join('') || '<tr><td colspan="4">No entries yet</td></tr>';
+          tbody.innerHTML = students.map((r, i) => '<tr><td>' + (i+1) + '</td><td>' + r + '</td><td><span class="status-badge">Present</span></td></tr>').join('') || '<tr class="empty-row"><td colspan="3">No entries yet</td></tr>';
         }})
         .catch(() => {{}});
     }}
