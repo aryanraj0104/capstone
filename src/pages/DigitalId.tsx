@@ -25,7 +25,7 @@ const DigitalId: React.FC = () => {
                         <div className="flex gap-4 relative z-10">
                             <div className="flex-1 space-y-3 pt-2">
                                 <div>
-                                    <p className="text-brand-green font-bold text-sm">VU22CSEN0100903</p>
+                                    <p className="text-brand-green font-bold text-sm">VU22CSEN0100036</p>
                                     <p className="font-bold text-gray-800">VSP, CSE</p>
                                 </div>
 
@@ -36,7 +36,7 @@ const DigitalId: React.FC = () => {
                                         <span>Phone: 9491922226</span>
                                     </div>
                                     <div className="flex items-center gap-1 text-xs font-semibold text-gray-700 break-all">
-                                        <span>Email: jpothuri@gitam.in</span>
+                                        <span>Email: araj8@gitam.in</span>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@ const DigitalId: React.FC = () => {
                             {/* Photo */}
                             <div className="w-28 h-36 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden border-2 border-white shadow-sm">
                                 <img
-                                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jithendra"
+                                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aryan"
                                     alt="Student"
                                     className="w-full h-full object-cover"
                                 />

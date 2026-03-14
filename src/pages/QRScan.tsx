@@ -48,7 +48,10 @@ const QRScan: React.FC = () => {
                     )}
 
                     {step === 'QR_SCAN' && (
-                        <QRScanner onScanSuccess={handleQRSuccess} />
+                        <QRScanner onVerificationSuccess={(roll) => {
+                            console.log("Face Verified for Roll:", roll);
+                            setStep('SUCCESS');
+                        }} />
                     )}
 
                     {step === 'SUCCESS' && (

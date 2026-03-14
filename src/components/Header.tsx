@@ -43,13 +43,13 @@ const Header: React.FC<HeaderProps> = ({ title, showBack = false }) => {
                     <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden border-2 border-brand-green/10">
                         {/* Placeholder for User Image */}
                         <img
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jithendra"
+                            src="https://api.dicebear.com/9.x/dylan/svg?seed=Milo"
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="flex-1">
-                        <h2 className="font-bold text-lg text-brand-green leading-tight">Pothuri Jithendra Varma</h2>
+                        <h2 className="font-bold text-lg text-brand-green leading-tight">Aryan Raj</h2>
                         <p className="text-sm font-semibold text-brand-green/80">VU22CSEN0100903</p>
                         <p className="text-xs text-brand-green/60 font-medium">GIT, VSP</p>
                     </div>

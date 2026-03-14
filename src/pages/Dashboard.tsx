@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
     CreditCard,
     Fingerprint,
@@ -23,6 +24,8 @@ interface MenuOption {
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [message, setMessage] = useState('');
 
     const menuOptions: MenuOption[] = [
         { icon: <CreditCard size={28} />, label: 'Digital ID', path: '/digital-id' },
@@ -36,6 +39,41 @@ const Dashboard: React.FC = () => {
         { icon: <Phone size={28} className="text-red-500" />, label: 'SoS', color: 'bg-red-50' }, // SOS has different style
         { icon: <Headphones size={28} />, label: 'Helpdesk' },
     ];
+
+    const startCamera = async () => {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            }
+        }
+    };
+
+    const captureAndVerify = async () => {
+        if (videoRef.current) {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoRef.current.videoWidth;
+            canvas.height = videoRef.current.videoHeight;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+                const imageBlob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve));
+                if (imageBlob) {
+                    const formData = new FormData();
+                    formData.append('image', imageBlob, 'snapshot.jpg');
+
+                    try {
+                        const response = await axios.post('http://127.0.0.1:5000/recognize', formData);
+                        const { message, roll } = response.data;
+                        setMessage(`${message}: ${roll}`);
+                    } catch (error) {
+                        setMessage('Verification failed. Please try again.');
+                    }
+                }
+            }
+        }
+    };
 
     return (
         <div className="min-h-screen bg-brand-bg pb-10">
@@ -63,6 +101,7 @@ const Dashboard: React.FC = () => {
             <footer className="mt-12 text-center">
                 <p className="text-gray-300 font-bold tracking-widest text-sm uppercase">Powered by CATS</p>
             </footer>
+
         </div>
     );
 };
