@@ -218,37 +218,33 @@ http://localhost:8000/docs
 
 To allow phones and Vercel frontend to access the backend:
 
-Start ngrok:
+1. Start ngrok:
 
 ```
 ngrok http 8000
 ```
 
-Example public URL:
+2. Copy the **HTTPS** URL ngrok gives you (e.g. `https://xxxx.ngrok-free.dev`).
+
+3. **Update the frontend** so it calls your backend: open **`src/utils/api.ts`** and set the `API_BASE` constant to your ngrok URL:
+
+```ts
+const API_BASE = "https://your-ngrok-url.ngrok-free.dev";
+```
+
+**If you run ngrok on a different device or get a new URL, you must change this link in `api.ts`** for the app (face recognition, attendance) to work. This is the only place in the codebase that needs the backend URL; all API calls use it.
+
+Example (replace with your own URL):
 
 ```
 https://unenlightened-supermedially-marcene.ngrok-free.dev
 ```
 
-All API calls will use this base URL.
-
 ---
 
 # Frontend Configuration (Vercel)
 
-In the Vercel project settings:
-
-```
-Settings → Environment Variables
-```
-
-Add:
-
-```
-API_BASE_URL=https://unenlightened-supermedially-marcene.ngrok-free.dev
-```
-
-Redeploy the frontend after adding the variable.
+The frontend uses the backend URL from **`src/utils/api.ts`** (the `API_BASE` constant). Before deploying to Vercel, set `API_BASE` in that file to your ngrok URL (see [Exposing the Backend (ngrok)](#exposing-the-backend-ngrok)). Redeploy the frontend after changing it so the student app can reach your backend.
 
 ---
 
