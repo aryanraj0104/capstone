@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import { CheckCircle } from 'lucide-react';
 import FaceScanner from '../components/FaceScanner';
 import QRScanner from '../components/QRScanner';
 
 const QRScan: React.FC = () => {
-    const navigate = useNavigate();
-    // States for logic flow: 'FACE_SCAN' -> 'QR_SCAN' -> 'SUCCESS'
     const [step, setStep] = useState<'FACE_SCAN' | 'QR_SCAN' | 'SUCCESS'>('FACE_SCAN');
+    const [rollNumber, setRollNumber] = useState<string | null>(null);
 
-    useEffect(() => {
-        let timeout: NodeJS.Timeout;
-        if (step === 'QR_SCAN') {
-            timeout = setTimeout(() => {
-                navigate('/');
-            }, 5000);
-        }
-        return () => clearTimeout(timeout);
-    }, [step, navigate]);
-
-    const handleFaceSuccess = () => {
+    const handleFaceSuccess = (roll: string) => {
+        setRollNumber(roll);
         setStep('QR_SCAN');
     };
 
-    const handleQRSuccess = (data: string) => {
-        console.log("QR Scanned:", data);
+    const handleAttendanceMarked = () => {
         setStep('SUCCESS');
     };
 
@@ -47,11 +35,11 @@ const QRScan: React.FC = () => {
                         <FaceScanner onSuccess={handleFaceSuccess} />
                     )}
 
-                    {step === 'QR_SCAN' && (
-                        <QRScanner onVerificationSuccess={(roll) => {
-                            console.log("Face Verified for Roll:", roll);
-                            setStep('SUCCESS');
-                        }} />
+                    {step === 'QR_SCAN' && rollNumber && (
+                        <QRScanner
+                            roll={rollNumber}
+                            onAttendanceMarked={handleAttendanceMarked}
+                        />
                     )}
 
                     {step === 'SUCCESS' && (
@@ -60,7 +48,7 @@ const QRScan: React.FC = () => {
                                 <CheckCircle size={64} className="text-green-600" />
                             </div>
                             <h3 className="text-2xl font-bold text-brand-text mb-2">Success!</h3>
-                            <p className="text-gray-600">Your face was verified and attendance has been marked successfully.</p>
+                            <p className="text-gray-600">Attendance marked successfully.</p>
 
                             <div className="mt-8 bg-brand-light-green p-4 rounded-xl w-full">
                                 <p className="text-xs text-brand-green font-bold uppercase tracking-wider mb-1">Session</p>
