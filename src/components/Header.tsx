@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, LogOut } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
     title?: string;
@@ -11,6 +12,12 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title, showBack = false }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { roll, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login', { replace: true });
+    };
 
     // If we are on dashboard, show the main header style
     // If we are on a sub-page, show the sub-header style (solid green)
@@ -33,7 +40,12 @@ const Header: React.FC<HeaderProps> = ({ title, showBack = false }) => {
                             <span className="text-[0.6rem] uppercase tracking-wider opacity-80">Deemed to be University</span>
                         </div>
                     </div>
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-green shadow-md">
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-green shadow-md"
+                        aria-label="Log out"
+                    >
                         <LogOut size={20} className="transform rotate-180" />
                     </button>
                 </div>
@@ -49,8 +61,8 @@ const Header: React.FC<HeaderProps> = ({ title, showBack = false }) => {
                         />
                     </div>
                     <div className="flex-1">
-                        <h2 className="font-bold text-lg text-brand-green leading-tight">Aryan Raj</h2>
-                        <p className="text-sm font-semibold text-brand-green/80">VU22CSEN0100903</p>
+                        <h2 className="font-bold text-lg text-brand-green leading-tight">{roll ?? 'Student'}</h2>
+                        <p className="text-sm font-semibold text-brand-green/80">{roll ?? '—'}</p>
                         <p className="text-xs text-brand-green/60 font-medium">GIT, VSP</p>
                     </div>
                 </div>

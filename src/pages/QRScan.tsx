@@ -3,8 +3,10 @@ import Header from '../components/Header';
 import { CheckCircle } from 'lucide-react';
 import FaceScanner from '../components/FaceScanner';
 import QRScanner from '../components/QRScanner';
+import { useAuth } from '../context/AuthContext';
 
 const QRScan: React.FC = () => {
+    const { roll: loggedInRoll } = useAuth();
     const [step, setStep] = useState<'FACE_SCAN' | 'QR_SCAN' | 'SUCCESS'>('FACE_SCAN');
     const [rollNumber, setRollNumber] = useState<string | null>(null);
 
@@ -32,7 +34,7 @@ const QRScan: React.FC = () => {
                 <div className="w-full aspect-[3/4] max-w-sm bg-black rounded-2xl overflow-hidden relative shadow-2xl border-4 border-white">
 
                     {step === 'FACE_SCAN' && (
-                        <FaceScanner onSuccess={handleFaceSuccess} />
+                        <FaceScanner onSuccess={handleFaceSuccess} loggedInRoll={loggedInRoll} />
                     )}
 
                     {step === 'QR_SCAN' && rollNumber && (

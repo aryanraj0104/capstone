@@ -4,9 +4,10 @@ import { UserX } from 'lucide-react';
 
 interface FaceScannerProps {
     onSuccess: (roll: string) => void;
+    loggedInRoll?: string | null;
 }
 
-const FaceScanner: React.FC<FaceScannerProps> = ({ onSuccess }) => {
+const FaceScanner: React.FC<FaceScannerProps> = ({ onSuccess, loggedInRoll }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState("Starting camera...");
@@ -68,6 +69,13 @@ const FaceScanner: React.FC<FaceScannerProps> = ({ onSuccess }) => {
             }
             const result = await recognizeFace(blob);
             if (result.status === "recognized" && result.person) {
+                const recognizedRoll = result.person.trim();
+                const expectedRoll = loggedInRoll?.trim() ?? '';
+                if (expectedRoll && recognizedRoll.toLowerCase() !== expectedRoll.toLowerCase()) {
+                    setStatus("Face does not match logged-in user.");
+                    setVerifying(false);
+                    return;
+                }
                 setStatus("✓ Identity Verified!");
                 const video = videoRef.current;
                 if (video?.srcObject) {
