@@ -69,7 +69,12 @@ const FaceScanner: React.FC<FaceScannerProps> = ({ onSuccess }) => {
             const result = await recognizeFace(blob);
             if (result.status === "recognized" && result.person) {
                 setStatus("✓ Identity Verified!");
-                setTimeout(() => onSuccess(result.person!), 800);
+                const video = videoRef.current;
+                if (video?.srcObject) {
+                    (video.srcObject as MediaStream).getTracks().forEach((track) => track.stop());
+                    video.srcObject = null;
+                }
+                onSuccess(result.person!);
                 return;
             }
             setStatus(result.status === "unknown" ? "Face not recognized. Try again." : "Verification failed. Try again.");

@@ -14,8 +14,9 @@ const QRScanner: React.FC<QRScannerProps> = ({ roll, onAttendanceMarked }) => {
     const submittedRef = useRef(false);
 
     useEffect(() => {
+        let cancelled = false;
         const startScanner = async () => {
-            if (!containerRef.current) return;
+            if (!containerRef.current || cancelled) return;
             try {
                 const html5Qr = new Html5Qrcode("qr-reader");
                 html5QrRef.current = html5Qr;
@@ -59,8 +60,12 @@ const QRScanner: React.FC<QRScannerProps> = ({ roll, onAttendanceMarked }) => {
             }
         };
 
-        startScanner();
+        const timer = setTimeout(() => {
+            startScanner();
+        }, 300);
         return () => {
+            cancelled = true;
+            clearTimeout(timer);
             if (html5QrRef.current?.isScanning) {
                 html5QrRef.current.stop().catch(() => {});
             }
