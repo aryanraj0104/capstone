@@ -15,12 +15,20 @@ from .recognize import recognize_face
 
 app = FastAPI()
 
+# CORS: allow frontend (Vercel + local dev) so browser requests from different origin succeed.
+# OPTIONS preflight is handled by CORSMiddleware; these headers are sent on all responses.
+ALLOWED_ORIGINS = [
+    "https://attendance-capstone.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],  # includes Content-Type, ngrok-skip-browser-warning, etc.
+    expose_headers=[],
 )
 
 _BACKEND_ROOT = Path(__file__).resolve().parent

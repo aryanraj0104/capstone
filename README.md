@@ -237,7 +237,7 @@ const API_BASE = "https://your-ngrok-url.ngrok-free.dev";
 Example (replace with your own URL):
 
 ```
-https://unenlightened-supermedially-marcene.ngrok-free.dev
+https://hyperbranchial-noncommendatory-leann.ngrok-free.dev
 ```
 
 ---
