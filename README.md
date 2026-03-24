@@ -149,7 +149,7 @@ cd capstone
 ## 2. Install Python Dependencies
 
 ```
-pip install fastapi uvicorn deepface opencv-python numpy scipy qrcode python-multipart tf-keras
+pip install fastapi uvicorn deepface opencv-python numpy scipy qrcode python-multipart tf-keras flask-cors
 ```
 
 ---
